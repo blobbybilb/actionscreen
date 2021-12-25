@@ -1,0 +1,13 @@
+{
+  "user_password": "pass123",
+  "shortcuts": {
+    "windows": {
+
+    },
+    "macos": {
+      "keyboard_shortcut": {
+        "spotlight": "command+space"
+      }
+    }
+  }
+}
