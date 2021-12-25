@@ -26,4 +26,5 @@ uhh... coming soon... hopefully
 
 #### To-do
 * [ ] GUI for configuring actions
-+ [ ] open apps
+* [ ] open apps
+* [ ] images for actions

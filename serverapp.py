@@ -3,6 +3,7 @@ from json import load
 from time import sleep
 
 from flask import Flask
+from flask import render_template
 from keyboard import press_and_release
 from requests import get
 from webbrowser import open as openurl
@@ -58,7 +59,7 @@ def request_handler(passwd, platform, action_type, action):
 
 @app.route('/')
 def check_page():
-    return 'actionscreen'  # to verify that it's a valid server
+    return render_template('/main.html/')
 
 
 app.run(host='0.0.0.0', port=5090, debug=True)
