@@ -28,3 +28,6 @@ uhh... coming soon... hopefully
 * [ ] GUI for configuring actions
 * [ ] open apps
 * [ ] images for actions
+* [ ] multiple screens
+  * [ ] screen chooser screen
+* [ ] switch column amount

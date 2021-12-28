@@ -8,36 +8,91 @@
 
         #main-grid {
             display: grid;
-            grid-template-columns: auto auto auto auto;
-            grid-template-rows: 14vh 14vh 14vh 14vh 14vh 14vh 14vh 14vh 14vh 14vh 14vh; {# TODO set this to correct amount after actual buttons rendered #}
+            grid-template-columns: {{ columns_to_display }};
+            grid-template-rows: {{ rows_to_display }};
             grid-column-gap: 10vh;
             grid-row-gap: 5vh;
         }
 
-        button.grid-item {
+        body {
+            padding: 2%;
+            background: {{ screen_color }};
         }
+
+        h1 {
+            width: 90%;
+            text-align: center;
+            margin-left: 10%;
+        }
+
+        #sidebar_button {
+            width: 40px;
+            position: absolute;
+            margin-top: 6px;
+        }
+
+        {% for item in screen_config %}
+
+            #item_{{ loop.index }} {
+                color: {{ item["text-color"] }};
+                border-color: {{ item["color"] }};
+            }
+
+            #item_{{ loop.index }}:hover {
+                background-color: {{ item["color"] }};
+                color: white;
+            }
+
+        {% endfor %}
 
     </style>
     <script>
-
+        const ip = '10.0.0.10' // TODO make IP entry on the side off-screen
+        function requestmaker(password, platform, action_type, action) {
+            const requestURL = `http://${ip}:5090/${password}/${platform}/${action_type}/${action}/`;
+            const theRequest = new XMLHttpRequest();
+            theRequest.open("GET", requestURL, false); // false for synchronous request
+            theRequest.send();
+            return theRequest.responseText;
+        }
     </script>
 </head>
 <body>
+    <div id="top">
+        <button id="sidebar_button" class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">≡</button>
+        <h1> actionscreen - {{ screen_name }} </h1>
+        <br>
+    </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div>
+          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        </div>
+        <div class="dropdown mt-3">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
     <div id="main-grid">
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
-        <button class="grid-item btn btn-outline-primary">hi</button>
+        {% for item in screen_config %}
+            <button class="grid-item btn btn-outline-primary" id="item_{{ loop.index }}"
+                    onclick="requestmaker('pass123', '{{ item["platform"] }}', '{{ item["action_type"] }}', '{{ item["action"] }}')">
+                {{ item["name"] }}</button>
+        {% endfor %}
     </div>
 </body>
 </html>

@@ -14,13 +14,14 @@ CONFIG_FILE = ".actionscreen_config"
 VERSION = "alpha.1"
 
 # update check
-# update_status = get(f"https://blobbybilb.github.io/actionscreen/update_check/{VERSION}.html")
-# if update_status != 'fine':
-#     if update_status == 'update':
-#         openurl("https://blobbybilb.github.io/actionscreen/update_error.html")  # TODO actually make this
-#     else:
-#         openurl("https://blobbybilb.github.io/actionscreen/other_error.html")  # TODO actually make this as well
-#     exitapp()
+site_url = "https://blobbybilb.github.io/actionscreen/"
+update_status = get(f"{site_url}update_check/{VERSION}.html")
+if update_status != 'fine':
+    if update_status == 'update':
+        openurl(f"{site_url}errors/update_error.html")
+    else:
+        openurl(f"{site_url}errors/other_error.html")
+    exitapp()
 
 try:
     open(CONFIG_FILE, "r").close()
@@ -29,13 +30,13 @@ except FileNotFoundError:
 
 with open(CONFIG_FILE) as config_file:
     json_data = load(config_file)
-    user_pass = json_data["user_password"]
+    password = json_data["password"]
     shortcuts = json_data["shortcuts"]
 
 
 @app.route('/<passwd>/<platform>/<action_type>/<action>/')
 def request_handler(passwd, platform, action_type, action):
-    if passwd != user_pass:
+    if passwd != password:
         sleep(1)
         return 'incorrect password'
     try:
@@ -57,9 +58,20 @@ def request_handler(passwd, platform, action_type, action):
     return 'success'
 
 
-@app.route('/')
-def check_page():
-    return render_template('/main.html/')
+@app.route('/<screen>/<columns>/')
+def check_page(screen, columns):
+    with open('.actionscreen_screens') as screen_file:
+        screen_data = load(screen_file)
+        screen_config = screen_data[screen]["screen_config"]
+        screen_color = screen_data[screen]["screen_color"]
+    try:
+        _ = int(columns)
+    except ValueError:
+        return f'{columns} is not an integer'
+    rows_to_display = (((len(screen_config)) // int(columns)) + 1) * '14vh '
+    columns_to_display = int(columns) * 'auto '
+    return render_template('/main.html/', screen_config=screen_config, screen_color=screen_color, screen_name=screen,
+                           rows_to_display=rows_to_display, columns_to_display=columns_to_display)
 
 
 app.run(host='0.0.0.0', port=5090, debug=True)
