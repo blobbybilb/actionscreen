@@ -16,6 +16,9 @@
       "keyboard_shortcut": {
         "spotlight": "command+space"
       }
+    },
+    "linux": {
+
     }
   }
 }

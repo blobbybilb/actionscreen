@@ -12,28 +12,29 @@ from webbrowser import open as openurl
 app = Flask(__name__)
 
 CONFIG_FILE = ".actionscreen_config"
-VERSION = "alpha.1"
+VERSION = "alpha.2"
 
 # update check
-site_url = "https://blobbybilb.github.io/actionscreen/"
-try:
-    update_status = get(f"{site_url}update_check/{VERSION}.html").text
-    if 'fine' not in update_status:
-        if 'update' in update_status:
-            openurl(f"{site_url}errors/update_error.html")
-            print('There is an update available!\
-                Go to the github repository for actionscreen to update.')
-            if 'important' in update_status:
-                openurl(f"{site_url}errors/big_update_error.html")
-                print('THERE IS AN IMPORTANT UPDATE AVAILABLE!\
-                    You should update immediately.')
-                exitapp()
-        else:
-            openurl(f"{site_url}errors/other_error.html")
-            print('There was an error checking for actionscreen update.')
-except:
-    openurl(f"{site_url}errors/other_error.html")
-    print('There was an error checking for actionscreen update.')
+# disabled during alpha, TODO re-enable later
+# site_url = "https://blobbybilb.github.io/actionscreen/"
+# try:
+#     update_status = get(f"{site_url}update_check/{VERSION}.html").text
+#     if 'fine' not in update_status:
+#         if 'update' in update_status:
+#             openurl(f"{site_url}errors/update_error.html")
+#             print('There is an update available!\
+#                 Go to the github repository for actionscreen to update.')
+#             if 'important' in update_status:
+#                 openurl(f"{site_url}errors/big_update_error.html")
+#                 print('THERE IS AN IMPORTANT UPDATE AVAILABLE!\
+#                     You should update immediately.')
+#                 exitapp()
+#         else:
+#             openurl(f"{site_url}errors/other_error.html")
+#             print('There was an error checking for actionscreen update.')
+# except:
+#     openurl(f"{site_url}errors/other_error.html")
+#     print('There was an error checking for actionscreen update.')
 
 try:
     open(CONFIG_FILE, "r").close()
@@ -101,8 +102,8 @@ def save_config():
 def edit_config():
     if not request.host.startswith(request.remote_addr):
         return 'This must be done from host computer!'
-
-    return render_template('/config.html/', json_data=json_data)
+    platforms_count = len(json_data["shortcuts"])
+    return render_template('/config.html/', json_data=json_data, platforms_count=platforms_count)
 
 
 app.run(host='0.0.0.0', port=5090, debug=True)
