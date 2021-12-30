@@ -20,9 +20,31 @@ uhh... coming soon... hopefully
 
 ### Features
 * run keyboard shortcuts
-* run sequences of keyboard shortcuts
+* open apps (coming very soon)
+* terminal commands
+* run sequences
+* **lightweight** on both client and server
+* **secure**
+  * rate limited (unlike many similar tools)
+    * on incorrect password requests only, so it doesn't affect performance
+  * password protected
+  * configuration can only be changed from host
+* great mac su
+* client runs in browser
+  * mobile devices
+  * anything that has a non-ancient browser (tested on safari, chrome, firefox)
+* server is cross-platform, run it anywhere python runs
+  * windows (32-bit/i386 and 64-bit/ARM64)
+  * macOS (Intel and Apple Silicon)
+  * linux
+  * and more!
 * add your own (by editing json)
 * free and open source
+* easy to set up
+* simple, clean, very customisable UI
+  * change button colors
+  * add images
+  * change background color
 
 #### To-do
 * [ ] GUI for configuring actions
@@ -31,3 +53,6 @@ uhh... coming soon... hopefully
 * [ ] multiple screens
   * [ ] screen chooser screen
 * [ ] switch column amount
+* [ ] get IP by itself?
+* [ ] logging
+* [ ] mouse clicks

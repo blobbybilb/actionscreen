@@ -2,7 +2,15 @@
   "password": "pass123",
   "shortcuts": {
     "windows": {
+      "keyboard_shortcut": {
 
+      },
+      "sequence": {
+
+      },
+      "open_app": {
+
+      }
     },
     "macos": {
       "keyboard_shortcut": {

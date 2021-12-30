@@ -17,6 +17,20 @@
         "action": "spotlight",
         "color": "blue",
         "text-color": "blue"
+      },{
+        "name": "Spotlight",
+        "platform": "macos",
+        "action_type": "keyboard_shortcut",
+        "action": "spotlight",
+        "color": "blue",
+        "text-color": "blue"
+      },{
+        "name": "Spotlight",
+        "platform": "macos",
+        "action_type": "keyboard_shortcut",
+        "action": "spotlight",
+        "color": "blue",
+        "text-color": "blue"
       }
     ]
   }

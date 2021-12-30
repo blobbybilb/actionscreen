@@ -10,7 +10,7 @@
             display: grid;
             grid-template-columns: {{ columns_to_display }};
             grid-template-rows: {{ rows_to_display }};
-            grid-column-gap: 10vh;
+            grid-column-gap: 5vh;
             grid-row-gap: 5vh;
         }
 
@@ -31,6 +31,19 @@
             margin-top: 6px;
         }
 
+        #ip_entry {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #password_entry {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 2%;
+        }
+
         {% for item in screen_config %}
 
             #item_{{ loop.index }} {
@@ -47,8 +60,8 @@
 
     </style>
     <script>
-        const ip = '10.0.0.10' // TODO make IP entry on the side off-screen
         function requestmaker(password, platform, action_type, action) {
+            const ip = document.querySelector('#ip_entry').value // TODO do the same for password
             const requestURL = `http://${ip}:5090/${password}/${platform}/${action_type}/${action}/`;
             const theRequest = new XMLHttpRequest();
             theRequest.open("GET", requestURL, false); // false for synchronous request
@@ -66,24 +79,12 @@
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <h5 class="offcanvas-title">Options</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
       </div>
-      <div class="offcanvas-body">
-        <div>
-          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-        </div>
-        <div class="dropdown mt-3">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-            Dropdown button
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
-      </div>
+
+        <input type="text" placeholder="IP address" value="{{ server_ip }}" class="form-control" id="ip_entry">
+        <input type="password" placeholder="password" class="form-control" id="password_entry">
     </div>
 
 
@@ -91,7 +92,8 @@
         {% for item in screen_config %}
             <button class="grid-item btn btn-outline-primary" id="item_{{ loop.index }}"
                     onclick="requestmaker('pass123', '{{ item["platform"] }}', '{{ item["action_type"] }}', '{{ item["action"] }}')">
-                {{ item["name"] }}</button>
+                {{ item["name"] }}
+              </button>
         {% endfor %}
     </div>
 </body>
