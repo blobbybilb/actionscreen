@@ -29,7 +29,6 @@ uhh... coming soon... hopefully
     * on incorrect password requests only, so it doesn't affect performance
   * password protected
   * configuration can only be changed from host
-* great mac su
 * client runs in browser
   * mobile devices
   * anything that has a non-ancient browser (tested on safari, chrome, firefox)
