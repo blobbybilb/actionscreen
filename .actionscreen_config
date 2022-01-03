@@ -3,22 +3,41 @@
   "shortcuts": {
     "windows": {
       "keyboard_shortcut": {
-
+        "copy": "control+c",
+        "cut": "control+x",
+        "search": "win+s"
       },
       "sequence": {
-
+        "Five Spaces": [" ", " ", " "," "," "]
       },
       "open_app": {
 
+      },
+      "write_text": {
+        "hello": "hello",
+        "email": "myemailaddress@example.com"
       }
     },
     "macos": {
       "keyboard_shortcut": {
         "spotlight": "command+space"
+      },
+
+      "sequence": {
+        "Five Spaces": [" ", " ", " "," "," "]
+      },
+      "open_app": {
+
+      },
+      "write_text": {
+        "hello": "hello",
+        "email": "myemailaddress@example.com"
       }
     },
     "linux": {
+      "open_app": {
 
+      }
     }
   }
 }

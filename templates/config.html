@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>actionscreen config</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <style>
+    <style>
 
         body {
             padding: 2%;
@@ -17,17 +17,15 @@
             padding-bottom: 2%;
         }
 
-        button.collapse_toggle {
-            width: {{ 96/platforms_count - 2*platforms_count - 2}}vw;
-            margin-left: 1vw;
-            margin-right: 1vw;
-        }
-
         p.collapse_toggle {
+            display: grid;
             width: 80%;
-            margin-top: 2%;
             margin-left: auto;
             margin-right: auto;
+            grid-template-columns: {% for _ in range(platforms_count) %} auto {% endfor %};
+            grid-column-gap: 2vw;
+            grid-row-gap: 2vw;
+            margin-top: 2%;
         }
 
         #password_set_input {
@@ -42,56 +40,76 @@
             margin-right: auto;
         }
 
+        .name_keyboard_shortcut_input {
+            width: 35%;
+            margin-right: 5%;
+            display: inline;
+        }
+        .shortcut_keyboard_shortcut_input {
+            width: 50%;
+            display: inline;
+        }
 
     </style>
+    <script>{{ config_js }}</script>
 </head>
 <body>
 <h1>actionscreen config</h1>
-<input type="text" class="form-control" id="password_set_input" value="{{ json_data["password"] }}"/>
+<input type="text" class="form-control" id="password_set_input" value="{{ json_data["password"] }}" name="password"/>
 {# TODO make this a password and unhide-able #}
-    <p class="collapse_toggle">
-{% for platform in json_data["shortcuts"] %}
-        <button class="btn btn-primary collapse_toggle" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_platform_{{ platform }}">
-        {{ platform }}
+
+<p>{# TODO make this show which key is which #}</p>
+
+<p class="collapse_toggle">
+    {% for platform in json_data["shortcuts"] %}
+        <button class="btn btn-primary collapse_toggle" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse_platform_{{ platform }}">
+            {{ platform }}
         </button>
-{% endfor %}
-    </p>
+    {% endfor %}
+</p>
 <div id="platforms_collapse">
-{% for platform in json_data["shortcuts"] %}
-    <div class="collapse" id="collapse_platform_{{ platform }}">
-        <div class="accordion" id="accordion_platform_{{ platform }}">
-            {% for action_type in json_data["shortcuts"][platform] %}
-                  <div class="accordion-item" id="{{ platform }}_accordion_action_type_{{ action_type }}">
-                    <h2 class="accordion-header" id="{{ platform }}_heading_action_type_{{ action_type }}">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ platform }}_body_action_type_{{ action_type }}">
-                          {{ action_type }}
-                      </button>
-                    </h2>
+    {% for platform in json_data["shortcuts"] %}
+        <div class="collapse" id="collapse_platform_{{ platform }}">
+            <div class="accordion" id="accordion_platform_{{ platform }}">
+                {% for action_type in json_data["shortcuts"][platform] %}
+                    <div class="accordion-item" id="{{ platform }}_accordion_action_type_{{ action_type }}">
+                        <h2 class="accordion-header" id="{{ platform }}_heading_action_type_{{ action_type }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#{{ platform }}_body_action_type_{{ action_type }}">
+                                {{ action_type | replace("_", " ") }}
+                            </button>
+                        </h2>
 
 
-                    <div id="{{ platform }}_body_action_type_{{ action_type }}" class="accordion-collapse collapse" data-bs-parent="accordion_platform_{{ platform }}">
-                      <div class="accordion-body">
+                        <div id="{{ platform }}_body_action_type_{{ action_type }}" class="accordion-collapse collapse"
+                             data-bs-parent="accordion_platform_{{ platform }}">
+                            <div class="accordion-body">
+                                {% if "keyboard_shortcut" == action_type %}
+                                    <div class="keyboard_shortcut_accordion_body">
+                                        <p>See the documentation for keys at (coming soon)</p> {# TODO fix after docs #}
+                                        {% for action in json_data["shortcuts"][platform][action_type] %}
+                                            <input type="text" name="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}" id="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}" class="form-control name_keyboard_shortcut_input" placeholder="name" value="{{ action }}">
+                                            <input type="text" name="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}" id="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}" class="form-control shortcut_keyboard_shortcut_input" placeholder="shortcut" value="{{ json_data["shortcuts"][platform][action_type][action] }}">
+                                        {% endfor %}
+                                        {% for _ in range(10) }
 
-                      {% if "keyboard_shortcut" %}
-                          <p>See the documentation for keys at (coming soon)</p> {# TODO docs #}
-                        {% for action in json_data["shortcuts"][platform][action_type] %}
-
-                        {% endfor %}
-
-                      {% endif %}
+                                    </div>
+                                {% endif %}
 
 
-                      </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
 
-            {% endfor %}
+                {% endfor %}
 
 
+            </div>
+            <br>
         </div>
-    </div>
-    <br>
-{% endfor %}
+    {% endfor %}
 </div>
+<button id="submit_button" class="btn btn-outline-primary" onclick="save_config_data({{ json_data }})"></button>
 </body>
 </html>

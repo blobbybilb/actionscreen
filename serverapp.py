@@ -1,4 +1,4 @@
-from sys import exit as exitapp
+# from sys import exit as exitapp
 from json import load
 from time import sleep
 
@@ -6,8 +6,9 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from keyboard import press_and_release
-from requests import get
-from webbrowser import open as openurl
+from keyboard import write
+# from requests import get
+# from webbrowser import open as openurl
 
 app = Flask(__name__)
 
@@ -59,6 +60,8 @@ def request_handler(passwd, platform, action_type, action):
             for part in shortcuts[platform][action_type][action]:
                 if part[0] == 'keyboard_shortcut':
                     press_and_release(part[1])
+        elif action_type == 'write_text':
+            write(shortcuts[platform][action_type][action])
 
     except KeyError:
         try:
@@ -83,6 +86,7 @@ def check_page(screen, columns):
         _ = int(columns)
     except ValueError:
         return f'{columns} is not an integer'
+        
     rows_to_display = (((len(screen_config)) // int(columns)) + 1) * '14vh '
     columns_to_display = int(columns) * 'auto '
     return render_template('/main.html/', screen_config=screen_config, screen_color=screen_color, screen_name=screen,
@@ -95,7 +99,9 @@ def save_config():
     if not request.host.startswith(request.remote_addr):
         return 'This must be done from host computer!'
     # TODO save config and update variable
-    json_data["password"] = request.form["password"]
+    # json_data["password"] = request.form["password"]
+
+    return request.form
 
 
 @app.route('/config/')
@@ -103,7 +109,9 @@ def edit_config():
     if not request.host.startswith(request.remote_addr):
         return 'This must be done from host computer!'
     platforms_count = len(json_data["shortcuts"])
-    return render_template('/config.html/', json_data=json_data, platforms_count=platforms_count)
+    config_js_file = open('config.js', 'r').read()
+    return render_template(
+        '/config.html/', json_data=json_data, platforms_count=platforms_count, config_js=config_js_file)
 
 
 app.run(host='0.0.0.0', port=5090, debug=True)

@@ -6,14 +6,38 @@ ___
 
 
 ### Installation (?)
-The simplest way to use actionscreen (in its current alpha form) is by downloading this repository,
-adding things into your config file, and running the python file. This requires you to have
-Python 3.6+ installed.
+The simplest way to use actionscreen (in its current alpha form) is by downloading this repository, adding things into your config file, and running the python file. This requires you to have Python 3.6+ installed. See steps below.
 
 ### How to use
-1. Run the serverapp.py file on your computer where you want to run the actions.
-(make sure to give accessibility permission on macOS if not running with sudo)
-2. Open the web app on your tablet/device which you want to trigger actions with.
+
+Simply follow these steps.
+
+1. If you haven't already, install Python 3. Go to the Python website (python.org) and get the latest version of Python 3 for your platform, and install it. Leaving the default options should be fine. Instructions for installing Python are available on the internet if you look it up!
+
+2. Open up a terminal/command prompt.
+  - On macOS, open Terminal.
+  - On Windows, open Command Prompt, Windows Terminal, or PowerShell.
+  - On GNU/Linux, you should know how to open a terminal by now ;).
+
+
+3. Install dependencies. Copy and paste this command into your terminal, and press enter.
+  - `python3 -m pip install keyboard flask`
+  - If that doesn't work: `python -m pip install keyboard flask`
+
+
+4. Clone this repository or download the zip file by pressing the green "Code 🔻" button.
+  - `git clone https://github.com/blobbybilb/actionscreen`
+
+
+5. Unzip the folder if needed, then run the `serverapp.py` file inside:
+  - `cd actionscreen` to switch to the app folder.
+  - On Windows, `python3 serverapp.py` or `python serverapp.py`
+  - Others, `sudo python3 serverapp.py`
+  - Note that you may not need to run it with sudo, but on macOS you will need to give the terminal accessibility permissions in order to use keyboard shortcuts.
+
+
+6. Open the web app on your tablet/device which you want to trigger actions with by going to the URL displayed in the terminal. You should be ready to go!
+
 
 ### Docs?
 uhh... coming soon... hopefully
