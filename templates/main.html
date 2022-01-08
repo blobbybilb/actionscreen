@@ -2,16 +2,19 @@
 <html lang="en">
 <head>
     <title>actionscreen</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <style>
 
         #main-grid {
             display: grid;
             grid-template-columns: {{ columns_to_display }};
             grid-template-rows: {{ rows_to_display }};
-            grid-column-gap: 5vh;
-            grid-row-gap: 5vh;
+            grid-column-gap: 4vw;
+            grid-row-gap: 4vh;
         }
 
         body {
@@ -60,41 +63,48 @@
 
     </style>
     <script>
-        function requestmaker(password, platform, action_type, action) {
-            const ip = document.querySelector('#ip_entry').value // TODO do the same for password
+        function requestmaker(platform, action_type, action) {
+            const ip = document.querySelector('#ip_entry').value
+            const password = document.querySelector('#password_entry').value
             const requestURL = `http://${ip}:5090/${password}/${platform}/${action_type}/${action}/`;
             const theRequest = new XMLHttpRequest();
             theRequest.open("GET", requestURL, false); // false for synchronous request
             theRequest.send();
-            return theRequest.responseText;
+            if (theRequest.responseText.includes('404')) {
+                alert('Please enter a password by clicking on the ≡ icon in the top left corner')
+            } else if (theRequest.responseText !== 'success') {
+                alert(theRequest.responseText)
+            }
         }
     </script>
 </head>
 <body>
-    <div id="top">
-        <button id="sidebar_button" class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">≡</button>
-        <h1> actionscreen - {{ screen_name }} </h1>
-        <br>
-    </div>
+<div id="top">
+    <button id="sidebar_button" class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#sidebar">≡
+    </button>
+    <h1> actionscreen - {{ screen_name }} </h1>
+    <br>
+</div>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
-      <div class="offcanvas-header">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
+    <div class="offcanvas-header">
         <h5 class="offcanvas-title">Options</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-      </div>
-
-        <input type="text" placeholder="IP address" value="{{ server_ip }}" class="form-control" id="ip_entry">
-        <input type="password" placeholder="password" class="form-control" id="password_entry">
     </div>
 
+    <input type="text" placeholder="IP address" value="{{ server_ip }}" class="form-control" id="ip_entry">
+    <input type="password" placeholder="password" class="form-control" id="password_entry">
+</div>
 
-    <div id="main-grid">
-        {% for item in screen_config %}
-            <button class="grid-item btn btn-outline-primary" id="item_{{ loop.index }}"
-                    onclick="requestmaker('pass123', '{{ item["platform"] }}', '{{ item["action_type"] }}', '{{ item["action"] }}')">
-                {{ item["name"] }}
-              </button>
-        {% endfor %}
-    </div>
+
+<div id="main-grid">
+    {% for item in screen_config %}
+        <button class="grid-item btn btn-outline-primary" id="item_{{ loop.index }}"
+                onclick="requestmaker('{{ item["platform"] }}', '{{ item["action_type"] }}', '{{ item["action"] }}')">
+            {{ item["name"] }}
+        </button>
+    {% endfor %}
+</div>
 </body>
 </html>

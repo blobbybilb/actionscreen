@@ -8,7 +8,7 @@
         "search": "win+s"
       },
       "sequence": {
-        "Five Spaces": [" ", " ", " "," "," "]
+        "select_all_copy": ["control+a", "control+c"]
       },
       "open_app": {
 
@@ -24,7 +24,7 @@
       },
 
       "sequence": {
-        "Five Spaces": [" ", " ", " "," "," "]
+        "select_all_copy": ["command+a", "command+c"]
       },
       "open_app": {
 

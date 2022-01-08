@@ -44,10 +44,12 @@
             width: 35%;
             margin-right: 5%;
             display: inline;
+            margin-bottom: 1vh;
         }
         .shortcut_keyboard_shortcut_input {
             width: 50%;
             display: inline;
+            margin-bottom: 1vh;
         }
 
     </style>
@@ -89,10 +91,27 @@
                                     <div class="keyboard_shortcut_accordion_body">
                                         <p>See the documentation for keys at (coming soon)</p> {# TODO fix after docs #}
                                         {% for action in json_data["shortcuts"][platform][action_type] %}
-                                            <input type="text" name="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}" id="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}" class="form-control name_keyboard_shortcut_input" placeholder="name" value="{{ action }}">
-                                            <input type="text" name="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}" id="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}" class="form-control shortcut_keyboard_shortcut_input" placeholder="shortcut" value="{{ json_data["shortcuts"][platform][action_type][action] }}">
+                                            <input type="text"
+                                                   id="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}"
+                                                   class="form-control name_keyboard_shortcut_input"
+                                                   placeholder="name"
+                                                   value="{{ action }}">
+                                            <input type="text"
+                                                   id="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}"
+                                                   class="form-control shortcut_keyboard_shortcut_input"
+                                                   placeholder="shortcut"
+                                                   value="{{ json_data["shortcuts"][platform][action_type][action] }}">
                                         {% endfor %}
-                                        {% for _ in range(10) }
+                                        {% for _ in range(5) %}
+                                            <input type="text"
+                                                   id="{{ platform }}__{{ action_type }}__name__{{ loop.index0 }}__new"
+                                                   class="form-control name_keyboard_shortcut_input"
+                                                   placeholder="name">
+                                            <input type="text"
+                                                   id="{{ platform }}__{{ action_type }}__shortcut__{{ loop.index0 }}__new"
+                                                   class="form-control shortcut_keyboard_shortcut_input"
+                                                   placeholder="shortcut">
+                                        {% endfor %}
 
                                     </div>
                                 {% endif %}
@@ -110,6 +129,6 @@
         </div>
     {% endfor %}
 </div>
-<button id="submit_button" class="btn btn-outline-primary" onclick="save_config_data({{ json_data }})"></button>
+<button id="save_button" class="btn btn-outline-primary" onclick="save_config_data({{ json_data }})">Save</button>
 </body>
 </html>

@@ -79,3 +79,5 @@ uhh... coming soon... hopefully
 * [ ] get IP by itself?
 * [ ] logging
 * [ ] mouse clicks
+* [ ] blacklist/whitelist IPs
+* [ ] wait in sequences
