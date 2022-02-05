@@ -1,43 +1,13 @@
 {
   "password": "pass123",
   "shortcuts": {
-    "windows": {
-      "keyboard_shortcut": {
-        "copy": "control+c",
-        "cut": "control+x",
-        "search": "win+s"
-      },
-      "sequence": {
-        "select_all_copy": ["control+a", "control+c"]
-      },
-      "open_app": {
-
-      },
-      "write_text": {
-        "hello": "hello",
-        "email": "myemailaddress@example.com"
-      }
-    },
-    "macos": {
-      "keyboard_shortcut": {
-        "spotlight": "command+space"
-      },
-
-      "sequence": {
-        "select_all_copy": ["command+a", "command+c"]
-      },
-      "open_app": {
-
-      },
-      "write_text": {
-        "hello": "hello",
-        "email": "myemailaddress@example.com"
-      }
-    },
-    "linux": {
-      "open_app": {
-
-      }
-    }
+    "spotlight": [
+      "keyboard_shortcut",
+      "command+space"
+    ],
+    "hello": [
+      "write_text",
+      "hello"
+    ]
   }
 }

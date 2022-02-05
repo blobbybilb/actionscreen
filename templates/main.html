@@ -22,7 +22,7 @@
             background: {{ screen_color }};
         }
 
-        h1 {
+        h2 {
             width: 90%;
             text-align: center;
             margin-left: 10%;
@@ -63,10 +63,10 @@
 
     </style>
     <script>
-        function requestmaker(platform, action_type, action) {
+        function requestmaker(action) {
             const ip = document.querySelector('#ip_entry').value
             const password = document.querySelector('#password_entry').value
-            const requestURL = `http://${ip}:5090/${password}/${platform}/${action_type}/${action}/`;
+            const requestURL = `http://${ip}:5090/req/${password}/${action}/`;
             const theRequest = new XMLHttpRequest();
             theRequest.open("GET", requestURL, false); // false for synchronous request
             theRequest.send();
@@ -83,7 +83,7 @@
     <button id="sidebar_button" class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#sidebar">≡
     </button>
-    <h1> actionscreen - {{ screen_name }} </h1>
+    <h2> actionscreen - {{ screen_name }} </h2>
     <br>
 </div>
 
@@ -100,10 +100,14 @@
 
 <div id="main-grid">
     {% for item in screen_config %}
+        {% if item["name"] == "blank" %}
+            <span class="grid-item"></span>
+        {% else %}
         <button class="grid-item btn btn-outline-primary" id="item_{{ loop.index }}"
-                onclick="requestmaker('{{ item["platform"] }}', '{{ item["action_type"] }}', '{{ item["action"] }}')">
+                onclick="requestmaker('{{ item["action"] }}')">
             {{ item["name"] }}
         </button>
+        {% endif %}
     {% endfor %}
 </div>
 </body>

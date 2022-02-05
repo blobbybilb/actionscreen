@@ -3,35 +3,62 @@
   "screen_config": [
     {
       "name": "Spotlight",
-      "platform": "macos",
-      "action_type": "keyboard_shortcut",
-      "action": "spotlight",
-      "color": "blueviolet",
-      "text-color": "blueviolet"
+      "action": "spotlight"
+    },{
+      "name": "blank",
+      "action": "none"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "blank",
+      "action": ""
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
+    },{
+      "name": "Spotlight",
+      "action": "spotlight"
     },
     {
-      "name": "Copy - Windows",
-      "platform": "windows",
-      "action_type": "keyboard_shortcut",
-      "action": "copy",
-      "color": "blue",
-      "text-color": "blue"
-    },
-    {
-      "name": "Copy - macOS",
-      "platform": "macos",
-      "action_type": "keyboard_shortcut",
-      "action": "spotlight",
-      "color": "blue",
-      "text-color": "blue"
-    },
-    {
-      "name": "Copy All",
-      "platform": "macos",
-      "action_type": "keyboard_shortcut",
-      "action": "spotlight",
-      "color": "blue",
-      "text-color": "blue"
+      "name": "Hello",
+      "action": "hello"
     }
   ]
 }

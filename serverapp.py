@@ -14,7 +14,8 @@ from keyboard import write
 app = Flask(__name__)
 
 CONFIG_FILE = ".actionscreen/config"
-VERSION = "alpha.3"
+VERSION = "alpha.5"
+ACTION_TYPES = ["keyboard_shortcut", "write_text"]  # open_app_macos, open_file_macos, same for windows/linux
 
 # update check
 # disabled during alpha, TODO re-enable later
@@ -49,35 +50,30 @@ with open(CONFIG_FILE) as config_file:
     shortcuts = json_data["shortcuts"]
 
 
-@app.route("/<passwd>/<platform>/<action_type>/<action>/")
-def request_handler(passwd, platform, action_type, action):
+@app.route("/req/<passwd>/<action>/")
+def request_handler(passwd, action):
     if passwd != password:
         sleep(1)
         return "incorrect password"
     try:
-        if action_type == "keyboard_shortcut":
-            press_and_release(shortcuts[platform][action_type][action])
-        elif action_type == "sequence":
-            for part in shortcuts[platform][action_type][action]:
-                # if part[0] == 'keyboard_shortcut': # instead change this to a prefix for other types
-                press_and_release(part[1])
-        elif action_type == "write_text":
-            write(shortcuts[platform][action_type][action])
-
+        action_type = shortcuts[action][0]
     except KeyError:
-        try:
-            _ = shortcuts[platform][action_type]
-            try:
-                _ = shortcuts[platform]
-            except KeyError:
-                return "invalid platform"
-        except KeyError:
-            return "invalid action type"
         return "invalid action"
-    return "success"
+    action_value = shortcuts[action][1]
+
+    if action_type == "keyboard_shortcut":
+        press_and_release(action_value)
+    elif action_type == "write_text":
+        write(action_value)
+
+    # elif action_type == "sequence":
+    #     for part in shortcuts[platform][action_type][action]:
+    #         # if part[0] == 'keyboard_shortcut': # TODO instead change this to a prefix for other types
+    #         press_and_release(part[1])
+    return 'success'
 
 
-@app.route("/<screen>/<columns>/")
+@app.route("/<screen>/<columns>/")  # TODO add column height adjustment and then remove /req/ from above route
 def check_page(screen, columns):
     with open(".actionscreen/screens/" + screen) as screen_file:
         screen_data = load(screen_file)
@@ -86,9 +82,9 @@ def check_page(screen, columns):
     try:
         _ = int(columns)
     except ValueError:
-        return f"{columns} is not an integer"
+        return f"{columns} is not an integer"  # TODO better message
 
-    rows_to_display = (((len(screen_config)) // int(columns)) + 1) * "14vh "
+    rows_to_display = (((len(screen_config)) // int(columns)) + 1) * "18vh "
     columns_to_display = int(columns) * "auto "
     return render_template(
         "/main.html/",
@@ -101,9 +97,7 @@ def check_page(screen, columns):
     )
 
 
-@app.route(
-    "/saveconfig/", methods=["POST"]
-)  # TODO give freindly message on non-POST request
+@app.route("/saveconfig/", methods=["POST"])  # TODO give freindly message on non-POST request
 def save_config():
     if not request.host.startswith(request.remote_addr):
         return "This must be done from host computer!"
@@ -117,14 +111,7 @@ def save_config():
 def edit_config():
     if not request.host.startswith(request.remote_addr):
         return "This must be done from host computer!"
-    platforms_count = len(json_data["shortcuts"])
-    config_js_file = open("config.js", "r").read()
-    return render_template(
-        "/config.html/",
-        json_data=json_data,
-        platforms_count=platforms_count,
-        config_js=config_js_file,
-    )
+    return render_template("/config.html/", json_data=json_data, action_types=ACTION_TYPES)
 
 
 @app.route("/")
@@ -137,5 +124,3 @@ app.run(host="0.0.0.0", port=5090, debug=True)
 # TODO screen chooser
 # TODO guide
 # TODO alpha notes on README (broken/expect)
-# TODO rename config -> config.json, and main_screen -> main_screen.json and fix in code
-# TODO remove platforms thing to simplify
