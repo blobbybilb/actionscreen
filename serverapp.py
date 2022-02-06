@@ -1,5 +1,5 @@
 # from sys import exit as exitapp
-from json import load
+import json
 from time import sleep
 
 from flask import Flask
@@ -45,7 +45,7 @@ except FileNotFoundError:
     open(CONFIG_FILE, "w+").close()
 
 with open(CONFIG_FILE) as config_file:
-    json_data = load(config_file)
+    json_data = json.load(config_file)
     password = json_data["password"]
     shortcuts = json_data["shortcuts"]
 
@@ -74,9 +74,9 @@ def request_handler(passwd, action):
 
 
 @app.route("/<screen>/<columns>/")  # TODO add column height adjustment and then remove /req/ from above route
-def check_page(screen, columns):
+def main_page(screen, columns):
     with open(".actionscreen/screens/" + screen) as screen_file:
-        screen_data = load(screen_file)
+        screen_data = json.load(screen_file)
         screen_config = screen_data["screen_config"]
         screen_color = screen_data["screen_color"]
     try:
@@ -99,19 +99,29 @@ def check_page(screen, columns):
 
 @app.route("/saveconfig/", methods=["POST"])  # TODO give freindly message on non-POST request
 def save_config():
+    global config_file, json_data, password, shortcuts
     if not request.host.startswith(request.remote_addr):
         return "This must be done from host computer!"
     # TODO save config and update variable
     # json_data["password"] = request.form["password"]
+    # print(dict(request.data))
+    data_dict = json.loads(request.data)
 
-    return request.form
+    with open(CONFIG_FILE, 'w') as config_file_write:
+        json.dump(data_dict, config_file_write)
+
+    with open(CONFIG_FILE) as config_file:
+        json_data = json.load(config_file)
+        password = json_data["password"]
+        shortcuts = json_data["shortcuts"]
+    return
 
 
 @app.route("/config/")
 def edit_config():
     if not request.host.startswith(request.remote_addr):
         return "This must be done from host computer!"
-    return render_template("/config.html/", json_data=json_data, action_types=ACTION_TYPES)
+    return render_template("/config.html/", json_data=json_data, action_types=ACTION_TYPES, host_url=request.host)
 
 
 @app.route("/")

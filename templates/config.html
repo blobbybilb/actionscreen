@@ -45,12 +45,20 @@
             text-align: center;
         }
 
+        #save-button {
+            width: 80vw;
+            max-width: 500px;
+            margin: 2% auto;
+            text-align: center;
+            display: block;
+        }
+
     </style>
     <script>
         const get3InputStrings = (indexNumber) => [document.getElementById(`name_${indexNumber}`).value, document.getElementById(`type_${indexNumber}`).value, document.getElementById(`action_${indexNumber}`).value];
         function saveData() {
             const json_object = {
-                password: document.getElementById('password-entry').value, // FIXME shouldn't be textContent, should it?
+                password: document.getElementById('password-entry').value,
                 shortcuts: {
 
                 }
@@ -68,7 +76,13 @@
                 shortcuts[inputStrings[0]] = [inputStrings[1], inputStrings[2]]
                 i++;
             }
+
+
+            const theRequest = new XMLHttpRequest();
+            theRequest.open("POST", 'http://{{ host_url }}/saveconfig/', false); // false for synchronous request
+            theRequest.send(JSON.stringify(json_object));
             console.log(JSON.stringify(json_object))
+            console.log(theRequest.responseText)
 
         }
 
@@ -90,6 +104,6 @@
         <input class="form-control shortcut-action" id="action_{{ loop.index }}" value="{{ json_data["shortcuts"][shortcut][1] }}">
     </div>
 {% endfor %}
-<button onclick="saveData()"> click me</button>
+<button onclick="saveData()" class="btn btn-outline-success" id="save-button"> Save Config </button>
 </body>
 </html>
