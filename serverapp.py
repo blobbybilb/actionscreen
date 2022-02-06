@@ -108,13 +108,13 @@ def save_config():
     data_dict = json.loads(request.data)
 
     with open(CONFIG_FILE, 'w') as config_file_write:
-        json.dump(data_dict, config_file_write)
+        json.dump(data_dict, config_file_write, indent=2)
 
     with open(CONFIG_FILE) as config_file:
         json_data = json.load(config_file)
         password = json_data["password"]
         shortcuts = json_data["shortcuts"]
-    return
+    return 'success'
 
 
 @app.route("/config/")

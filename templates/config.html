@@ -81,12 +81,8 @@
             const theRequest = new XMLHttpRequest();
             theRequest.open("POST", 'http://{{ host_url }}/saveconfig/', false); // false for synchronous request
             theRequest.send(JSON.stringify(json_object));
-            console.log(JSON.stringify(json_object))
-            console.log(theRequest.responseText)
-
+            location.reload();
         }
-
-
     </script>
 </head>
 <body>
@@ -102,6 +98,17 @@
             {% endfor %}
         </select>
         <input class="form-control shortcut-action" id="action_{{ loop.index }}" value="{{ json_data["shortcuts"][shortcut][1] }}">
+    </div>
+{% endfor %}
+{% for _ in range(5) %}
+    <div id="div_extra_{{ loop.index }}" class="shortcut-div">
+        <input class="form-control shortcut-name" id="extra_name_{{ loop.index }}">
+        <select class="form-select shortcut-type" id="extra_type_{{ loop.index }}">
+            {% for each_type in action_types %}
+                <option value="{{ each_type }}">{{ each_type }}</option>
+            {% endfor %}
+        </select>
+        <input class="form-control shortcut-action" id="extra_action_{{ loop.index }}">
     </div>
 {% endfor %}
 <button onclick="saveData()" class="btn btn-outline-success" id="save-button"> Save Config </button>
