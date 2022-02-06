@@ -45,7 +45,7 @@
             text-align: center;
         }
 
-        #save-button {
+        #save-button, #add-more-button {
             width: 80vw;
             max-width: 500px;
             margin: 2% auto;
@@ -53,10 +53,19 @@
             display: block;
         }
 
+        #add-more-button {
+            margin-bottom: 0;
+        }
+        #save-button {
+            margin-top: 1%;
+        }
+
     </style>
     <script>
         const get3InputStrings = (indexNumber) => [document.getElementById(`name_${indexNumber}`).value, document.getElementById(`type_${indexNumber}`).value, document.getElementById(`action_${indexNumber}`).value];
-        function saveData() {
+        const get3InputStringsExtras = (indexNumber) => [document.getElementById(`extra_name_${indexNumber}`).value, document.getElementById(`extra_type_${indexNumber}`).value, document.getElementById(`extra_action_${indexNumber}`).value];
+
+        function saveData(addMore) {
             const json_object = {
                 password: document.getElementById('password-entry').value,
                 shortcuts: {
@@ -66,22 +75,29 @@
             let i = 1;
             const shortcuts = json_object.shortcuts;
             let inputStrings = null;
+
             while (true) {  // TODO check for duplicate names
 
-                if (document.getElementById(`name_${i}`) === null) {
-                    break;
-                }
+                if (document.getElementById(`name_${i}`) === null) { break }
 
                 inputStrings = get3InputStrings(i);
+                if (inputStrings[0]==='' || inputStrings[2]==='') { i++; continue }
                 shortcuts[inputStrings[0]] = [inputStrings[1], inputStrings[2]]
                 i++;
+            }
+
+            for (let j=1; j<5; j++) {
+                inputStrings = get3InputStringsExtras(j)
+                if (inputStrings[0]==='' || inputStrings[2]==='') { continue }
+                shortcuts[inputStrings[0]] = [inputStrings[1], inputStrings[2]]
             }
 
 
             const theRequest = new XMLHttpRequest();
             theRequest.open("POST", 'http://{{ host_url }}/saveconfig/', false); // false for synchronous request
             theRequest.send(JSON.stringify(json_object));
-            location.reload();
+            if (theRequest.responseText === 'success') { alert('Saved your config!')} else { alert('There was an error while saving your config. Try again.')}
+            if (addMore) { location.reload(); } else { location.href = 'http://{{ host_url }}/' }
         }
     </script>
 </head>
@@ -100,6 +116,8 @@
         <input class="form-control shortcut-action" id="action_{{ loop.index }}" value="{{ json_data["shortcuts"][shortcut][1] }}">
     </div>
 {% endfor %}
+
+{# add extra ones #}
 {% for _ in range(5) %}
     <div id="div_extra_{{ loop.index }}" class="shortcut-div">
         <input class="form-control shortcut-name" id="extra_name_{{ loop.index }}">
@@ -111,6 +129,7 @@
         <input class="form-control shortcut-action" id="extra_action_{{ loop.index }}">
     </div>
 {% endfor %}
-<button onclick="saveData()" class="btn btn-outline-success" id="save-button"> Save Config </button>
+<button onclick="saveData(true)" class="btn btn-outline-primary" id="add-more-button"> Add More </button>
+<button onclick="saveData(false)" class="btn btn-outline-success" id="save-button"> Save Config </button>
 </body>
 </html>

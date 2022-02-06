@@ -8,6 +8,18 @@
     "hello": [
       "write_text",
       "hello"
+    ],
+    "copy": [
+      "keyboard_shortcut",
+      "command+c"
+    ],
+    "test": [
+      "keyboard_shortcut",
+      "test"
+    ],
+    "mission control": [
+      "keyboard_shortcut",
+      "control+up"
     ]
   }
 }

@@ -3,7 +3,9 @@
   "screen_config": [
     {
       "name": "Spotlight",
-      "action": "spotlight"
+      "action": "spotlight",
+      "text-color": "red",
+      "color": "green"
     },{
       "name": "blank",
       "action": "none"
