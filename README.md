@@ -1,4 +1,4 @@
-_Note: This is currently in alpha, and lacking many of the features I hope to implement. But it works._
+_Note: This is currently in alpha, and lacking many of the features I hope to implement. But it mostly works._
 
 # actionscreen
 
@@ -48,16 +48,12 @@ Simply follow these steps.
 6. Open the web app on your tablet/device which you want to trigger actions with by going to the URL displayed in the
    terminal. You should be ready to go!
 
-### Docs?
-
-uhh... coming soon... hopefully
-
 ### Features
 
 * run keyboard shortcuts
 * open apps (coming very soon)
-* terminal commands
-* run sequences
+* terminal commands (also coming soon)
+* run sequences of these (coming after those)
 * **lightweight** on both client and server
 * **secure**
     * rate limited (unlike many similar tools)
@@ -75,10 +71,8 @@ uhh... coming soon... hopefully
 * add your own (by editing json)
 * free and open source
 * easy to set up
-* simple, clean, very customisable UI
-    * change button colors
-    * add images
-    * change background color
+* simple, clean, customisable UI
+
 
 #### To-do
 
@@ -88,9 +82,7 @@ uhh... coming soon... hopefully
 * [ ] multiple screens
     * [ ] screen chooser screen
 * [ ] switch column amount
-* [ ] get IP by itself?
 * [ ] logging
 * [ ] mouse clicks
 * [ ] blacklist/whitelist IPs
 * [ ] wait in sequences
-* [ ] a blank/spacer option for screens
